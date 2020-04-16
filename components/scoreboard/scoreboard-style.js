@@ -17,6 +17,7 @@ export default `
 		background: #eee;
 	}
 
+	names-row:hover,
 	scoreboard-row:hover,
 	total-row:hover {
 		background: #ddd;

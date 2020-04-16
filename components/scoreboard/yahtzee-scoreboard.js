@@ -25,8 +25,11 @@ export class YahtzeeScoreboard extends HTMLElement {
 			</scoreboard-row>`;
 		};
 
-		const totalRow = (id, name) => {
-			return `<total-row id="${id}" players="${this.playerCount}">
+		const totalRow = (id, name, description) => {
+			return `<total-row id="${id}"
+				players="${this.playerCount}"
+				${description ? `description="${description}"` : ''}
+			>
 				${name}
 			</total-row>`;
 		};
@@ -35,18 +38,20 @@ export class YahtzeeScoreboard extends HTMLElement {
 			<style>${style}</style>
 			<div class="names-section">
 				<names-row players="${this.playerCount}">
-					Names
+					Player names
 				</names-row>
 			</div>
 			<div class="upper-section">
 				${map(upperSection, scoreboardRow)}
 				${totalRow('upperSubtotal', 'Upper section subtotal')}
-				${totalRow('upperBonus', 'Upper section bonus')}
+				${totalRow('upperBonus', 'Upper section bonus',
+					'35 bonus points if you score a total of 63 in the upper section, equivalent to getting three ones, three twos, and so on.')}
 				${totalRow('upperTotal', 'Upper section total')}
 			</div>
 			<div class="lower-section">
 				${map(lowerSection, scoreboardRow)}
-				${totalRow('yahtzeeBonus', 'Yahtzee bonus')}
+				${totalRow('yahtzeeBonus', 'Yahtzee bonus',
+					'100 bonus points for subsequent yahtzees, if you scored your first one')}
 				${totalRow('lowerTotal', 'Lower section total')}
 			</div>
 			<div class="totals-section">

@@ -11,17 +11,25 @@ export class DiceRoller extends HTMLElement {
 		super();
 		const numberOfFaces = this.getAttribute('faces') || 6,
 			dieCount = this.getAttribute('count'),
-			rollsPerTurn = this.getAttribute('rollsPerTurn');
+			rollsPerTurn = this.getAttribute('rollsPerTurn'),
+			downscaling = parseFloat(this.getAttribute('downscaling')) || 1;
 
 		this.rollsPerTurn = parseInt(rollsPerTurn, 10) || 3;
 
 		shadowDom(this, `
+			<style>
+				:host {
+					text-align: center;
+				}
+			</style>
 			<div>
 				${multiple(
-					`<holdable-die faces="${numberOfFaces}"></holdable-die>`,
+					`<holdable-die faces="${numberOfFaces}"
+						downscaling="${downscaling}">
+					</holdable-die>`,
 					dieCount)}
 			</div>
-			<span id="rollsLeft">3 rolls left</span>
+			<span id="rollsLeft"></span>
 			<done-button id="rerollButton">Next</done-button>
 		`);
 		this.dice = [ ...this.shadowRoot.querySelectorAll('holdable-die') ];
@@ -59,6 +67,8 @@ export class DiceRoller extends HTMLElement {
 			for (const die of this.dice)
 				if (!die.held)
 					continue nextRoll;
+
+			this.rollsLeft.innerHTML = '';
 			break;
 		}
 

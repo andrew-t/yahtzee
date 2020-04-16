@@ -1,15 +1,20 @@
 import { shadowDom } from '../../util/dom.js';
+import shader from './shader.js';
 
 const style = `
 	:host {
 		display: inline-block;
-		width: 2em;
-		line-height: 2em;
+		width: 1em;
+		height: 1em;
+		box-sizing: border-box;
+		font-size: 15vmin;
 		text-align: center;
-		line-height: 2em;
-		border: 1px solid black;
-		background: white;
-		margin: 0.5em;
+		vertical-align: middle;
+	}
+
+	#shader {
+		width: 1em;
+		height: 1em;
 	}
 `;
 
@@ -18,23 +23,41 @@ export class RollableDie extends HTMLElement {
 		super();
 		// one fine day we will change this...
 		this.numberOfFaces = parseInt(this.getAttribute('faces'), 10) || 6;
+		this.downscaling = parseFloat(this.getAttribute('downscaling')) || 1;
+
 		shadowDom(this, `
 			<style>${style}</style>
-			<span id="output"></span>
+			<canvas id="shader"></canvas>
 		`);
+
+		this.glslCanvas = new GlslCanvas(this.shader);
+		this.glslCanvas.pause();
+		this.glslCanvas.on('error', console.error);
+		this.glslCanvas.on('load', () => this.render());
+		this.shader.width = this.shader.clientWidth * devicePixelRatio / this.downscaling;
+		this.shader.height = this.shader.clientHeight * devicePixelRatio / this.downscaling;
+		setTimeout(() => {
+			console.log('Compiling shader...');
+			this.glslCanvas.load(shader);
+		});
 	}
 
 	connectedCallback() {
 		this.roll();
 	}
 
-	async roll() {
-		this.value = Math.floor(Math.random() * this.numberOfFaces) + 1;
-		this.render();
+	render() {
+		this.glslCanvas.setUniform('VALUE', this.value);
+		this.shader.title = this.value;
 	}
 
-	render() {
-		this.output.innerHTML = this.value.toString();
+	roll() {
+		this.value = Math.floor(Math.random() * this.numberOfFaces) + 1;
+		this.render();
+		// reset the tumble
+		this.glslCanvas.timeLoad = performance.now();
+		this.glslCanvas.play();
+		return new Promise(resolve => setTimeout(resolve, 1000));
 	}
 }
 

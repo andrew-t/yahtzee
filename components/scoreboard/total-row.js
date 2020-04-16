@@ -7,6 +7,7 @@ export class TotalRow extends HTMLElement {
 		super();
 
 		this.playerCount = parseInt(this.getAttribute('players'), 10) || 1;
+		const description = this.getAttribute('description');
 
 		shadowDom(this, `
 			<style>
@@ -18,7 +19,10 @@ export class TotalRow extends HTMLElement {
 					justify-content: center;
 				}
 			</style>
-			<span class="name" id="name"></span>
+			<span id="name"
+				class="name"
+				${description ? `title="${description}"` : ''}>
+			</span>
 			${multiple(`<span class="value-cell">
 				<span class="value">0</span>
 			</span>`, this.playerCount)}

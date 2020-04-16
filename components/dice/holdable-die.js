@@ -3,12 +3,18 @@ import { shadowDom } from '../../util/dom.js';
 const style = `
 	button {
 		border: 2px solid green;
+		padding: 0;
 	}
 	button.held {
 		border: 2px solid red;
 	}
 	button:disabled {
 		border: 2px solid black;
+		color: black;
+	}
+	button:focus {
+		outline: none;
+		box-shadow: 0 0 0 4px #fd8;
 	}
 `;
 
@@ -16,12 +22,14 @@ export class HoldableDie extends HTMLElement {
 	constructor() {
 		super();
 		const numberOfFaces = this.getAttribute('faces') || 6;
+		const downscaling = parseFloat(this.getAttribute('downscaling')) || 1;
 
 		shadowDom(this, `
 			<style>${style}</style>
 			<button id="button">
 				<rollable-die
 					id="innerDie"
+					downscaling="2"
 					faces="${numberOfFaces}">
 				</rollable-die>
 			</button>

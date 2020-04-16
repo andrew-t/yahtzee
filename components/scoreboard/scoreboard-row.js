@@ -17,7 +17,7 @@ export class ScoreboardRow extends HTMLElement {
 
 		shadowDom(this, `
 			<style>${style}</style>
-			<span class="name">${this.name}</span>
+			<span class="name" title="${this.description}">${this.name}</span>
 			${multiple(`<button class="value-cell value" disabled></button>`, this.playerCount)}
 		`);
 		this.valueEls = [ ...this.shadowRoot.querySelectorAll('.value') ];
