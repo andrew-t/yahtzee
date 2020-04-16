@@ -21,8 +21,8 @@ export class DiceRoller extends HTMLElement {
 					`<holdable-die faces="${numberOfFaces}"></holdable-die>`,
 					dieCount)}
 			</div>
-			<span id="rollsLeft">3</span> rolls left
-			<done-button id="rerollButton">Re-roll</done-button>
+			<span id="rollsLeft">3 rolls left</span>
+			<done-button id="rerollButton">Next</done-button>
 		`);
 		this.dice = [ ...this.shadowRoot.querySelectorAll('holdable-die') ];
 
@@ -49,7 +49,9 @@ export class DiceRoller extends HTMLElement {
 			await this.roll();
 
 			if (--rollsLeft == 0) break;
-			this.rollsLeft.innerHTML = rollsLeft;
+			this.rollsLeft.innerHTML = rollsLeft == 1
+				? '1 roll left'
+				: `${rollsLeft} rolls left`;
 
 			for (const die of this.dice)
 				die.disabled = false;

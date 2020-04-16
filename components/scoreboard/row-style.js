@@ -1,38 +1,50 @@
 export default `
 	:host {
 		display: flex;
-		width: 100vw;
+		width: 100%;
+	}
+
+	@media (min-width: 30em) {
+		.name {
+			padding-left: 1.5em !important;
+		}
+	}
+
+	.name, .value-cell {
+		padding: 0.5em;
+		font-family: sans-serif;
+		box-sizing: content-box;
 	}
 
 	.name {
-		flex: 5em 1 1;
+		flex: 15em 0.2 1;
 	}
 
-	.value {
-		flex: 4em 0 0;
+	.value-cell {
+		flex: 4em 1 0;
+		width: 4em;
 		text-align: center;
 		font-size: inherit;
-		font-family: inherit;
 		color: inherit;
-		border: 0;
+		border: none;
+		border-left: 1px solid black;
 		background: none;
 		margin: 0;
-		padding: 0;
+	}
+
+	.value:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px inset #fc4;
 	}
 
 	button.value:not(:disabled) {
-		animation: pulse 300ms infinite alternate;
+		background: #ffc;
 		cursor: pointer;
 	}
 
 	button.value:not(:disabled):hover {
 		color: blue;
+		background: #ff8;
 		text-decoration: underline;
-		animation: none;
-	}
-
-	@keyframes pulse {
-		from { opacity: 0.6; }
-		to { opacity: 0.4; }
 	}
 `;

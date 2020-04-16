@@ -9,9 +9,19 @@ export class TotalRow extends HTMLElement {
 		this.playerCount = parseInt(this.getAttribute('players'), 10) || 1;
 
 		shadowDom(this, `
-			<style>${style}</style>
+			<style>
+				${style}
+				.name { font-weight: bold; }
+				.value-cell {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+				}
+			</style>
 			<span class="name" id="name"></span>
-			${multiple(`<span class="value">0</span>`, this.playerCount)}
+			${multiple(`<span class="value-cell">
+				<span class="value">0</span>
+			</span>`, this.playerCount)}
 		`);
 		importChildren(this, this.name);
 		this.valueSpans = [ ...this.shadowRoot.querySelectorAll('.value') ];

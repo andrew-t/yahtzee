@@ -1,16 +1,12 @@
 import './scoreboard-row.js';
 import './total-row.js';
+import './names-row.js';
+
+import style from './scoreboard-style.js';
 
 import { shadowDom, map } from '../../util/dom.js';
 
 import { upperSection, lowerSection, bothSections, isYahtzee } from './section-rules.js';
-
-const style = `
-	scoreboard-row:hover,
-	total-row:hover {
-		background: #ddd;
-	}
-`;
 
 function sumArrays(arrays) {
 	return arrays.reduce((p, n) => p.map((v, i) => v + n[i]));
@@ -37,6 +33,11 @@ export class YahtzeeScoreboard extends HTMLElement {
 
 		shadowDom(this, `
 			<style>${style}</style>
+			<div class="names-section">
+				<names-row players="${this.playerCount}">
+					Names
+				</names-row>
+			</div>
 			<div class="upper-section">
 				${map(upperSection, scoreboardRow)}
 				${totalRow('upperSubtotal', 'Upper section subtotal')}
@@ -91,7 +92,7 @@ export class YahtzeeScoreboard extends HTMLElement {
 
 	scoreDice(dice) {
 		// yahtzee bonus...
-		if (isYahtzee(dice) && this.getRow('yahtzee').values[currentPlayer] > 0)
+		if (isYahtzee(dice) && this.getRow('yahtzee').values[this.currentPlayer] > 0)
 			this.yahtzeeBonus.increase(this.currentPlayer, 100);
 		// regular points...
 		return new Promise(resolve => {
