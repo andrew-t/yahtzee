@@ -42,6 +42,7 @@ export class DiceRoller extends HTMLElement {
 		for (const die of this.dice)
 			die.held = false;
 
+		nextRoll:
 		while (true) {
 			for (const die of this.dice)
 				die.disabled = true;
@@ -53,6 +54,10 @@ export class DiceRoller extends HTMLElement {
 			for (const die of this.dice)
 				die.disabled = false;
 			await this.rerollButton.waitForPress();
+			for (const die of this.dice)
+				if (!die.held)
+					continue nextRoll;
+			break;
 		}
 
 		this.classList.remove('active');

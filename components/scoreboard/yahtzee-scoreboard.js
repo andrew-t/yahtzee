@@ -3,10 +3,13 @@ import './total-row.js';
 
 import { shadowDom, map } from '../../util/dom.js';
 
-import { upperSection, lowerSection, bothSections } from './section-rules.js';
+import { upperSection, lowerSection, bothSections, isYahtzee } from './section-rules.js';
 
 const style = `
-
+	scoreboard-row:hover,
+	total-row:hover {
+		background: #ddd;
+	}
 `;
 
 function sumArrays(arrays) {
@@ -87,6 +90,10 @@ export class YahtzeeScoreboard extends HTMLElement {
 	}
 
 	scoreDice(dice) {
+		// yahtzee bonus...
+		if (isYahtzee(dice) && this.getRow('yahtzee').values[currentPlayer] > 0)
+			this.yahtzeeBonus.increase(this.currentPlayer, 100);
+		// regular points...
 		return new Promise(resolve => {
 			for (const row of this.allRows)
 				row.scoreDice(dice, () => resolve(row.id));

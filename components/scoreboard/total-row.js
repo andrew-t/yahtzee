@@ -34,6 +34,12 @@ export class TotalRow extends HTMLElement {
 		for (let i = 0; i < this.playerCount; ++i)
 			this.valueSpans[i].innerHTML = totals[i];
 	}
+
+	increase(i, n) {
+		const v = this.values;
+		v[i] += n;
+		this.values = v;
+	}
 }
 
 window.customElements.define('total-row', TotalRow);

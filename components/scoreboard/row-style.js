@@ -22,7 +22,9 @@ export default `
 
 	button.value:not(:disabled) {
 		animation: pulse 300ms infinite alternate;
+		cursor: pointer;
 	}
+
 	button.value:not(:disabled):hover {
 		color: blue;
 		text-decoration: underline;
