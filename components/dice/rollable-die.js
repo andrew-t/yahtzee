@@ -1,4 +1,4 @@
-import { shadowDom } from '../dom.js';
+import { shadowDom } from '../../util/dom.js';
 
 const style = `
 	:host {
@@ -18,11 +18,10 @@ export class RollableDie extends HTMLElement {
 		super();
 		// one fine day we will change this...
 		this.numberOfFaces = parseInt(this.getAttribute('faces'), 10) || 6;
-		const elementsById = shadowDom(this, `
+		shadowDom(this, `
 			<style>${style}</style>
 			<span id="output"></span>
 		`);
-		this.output = elementsById.output;
 	}
 
 	connectedCallback() {

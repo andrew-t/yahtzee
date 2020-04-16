@@ -1,4 +1,4 @@
-import { shadowDom } from '../dom.js';
+import { shadowDom, importChildren } from '../util/dom.js';
 
 const style = `
 	:host {
@@ -16,12 +16,10 @@ const style = `
 export class DoneButton extends HTMLElement {
 	constructor() {
 		super();
-		const elementsById = shadowDom(this, `
+		shadowDom(this, `
 			<button id="button" disabled></button>
 		`);
-		this.button = elementsById.button;
-		for (const child of this.childNodes)
-			this.button.appendChild(child);
+		importChildren(this, this.button);
 	}
 
 	waitForPress() {

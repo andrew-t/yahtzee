@@ -1,26 +1,30 @@
-import { shadowDom, multiple } from '../dom.js';
+import { shadowDom, multiple } from '../../util/dom.js';
+
+// You don't need to import these here,
+// but it seems like a good way of managing dependencies.
+import './rollable-die.js';
+import './holdable-die.js';
+import '../done-button.js';
 
 export class DiceRoller extends HTMLElement {
 	constructor() {
 		super();
-		const numberOfFaces = this.getAttribute('faces'),
+		const numberOfFaces = this.getAttribute('faces') || 6,
 			dieCount = this.getAttribute('count'),
 			rollsPerTurn = this.getAttribute('rollsPerTurn');
 
 		this.rollsPerTurn = parseInt(rollsPerTurn, 10) || 3;
 
-		const elementsById = shadowDom(this, `
+		shadowDom(this, `
 			<div>
 				${multiple(
 					`<holdable-die faces="${numberOfFaces}"></holdable-die>`,
 					dieCount)}
 			</div>
-			<span id="rollsLeft">3</span> rounds left
+			<span id="rollsLeft">3</span> rolls left
 			<done-button id="rerollButton">Re-roll</done-button>
 		`);
-		this.dice = [ ...this._shadowRoot.querySelectorAll('holdable-die') ];
-		this.rollsLeft = elementsById.rollsLeft;
-		this.rerollButton = elementsById.rerollButton;
+		this.dice = [ ...this.shadowRoot.querySelectorAll('holdable-die') ];
 
 		for (const die of this.dice)
 			die.disabled = true;

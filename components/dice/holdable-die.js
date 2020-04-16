@@ -1,11 +1,24 @@
-import { shadowDom } from '../dom.js';
+import { shadowDom } from '../../util/dom.js';
+
+const style = `
+	button {
+		border: 2px solid green;
+	}
+	button.held {
+		border: 2px solid red;
+	}
+	button:disabled {
+		border: 2px solid black;
+	}
+`;
 
 export class HoldableDie extends HTMLElement {
 	constructor() {
 		super();
-		const numberOfFaces = parseInt(this.getAttribute('faces'), 10) || 6;
+		const numberOfFaces = this.getAttribute('faces') || 6;
 
-		const elementsById = shadowDom(this, `
+		shadowDom(this, `
+			<style>${style}</style>
 			<button id="button">
 				<rollable-die
 					id="innerDie"
@@ -13,22 +26,15 @@ export class HoldableDie extends HTMLElement {
 				</rollable-die>
 			</button>
 		`);
-		this.button = elementsById.button;
-		this.innerDie = elementsById.innerDie;
 
-		this.button.addEventListener('click', e => {
-			this.held = !this.held;
-		});
-
-		this._held = false;
-		this._disabled = false;
+		this.button.addEventListener('click', () => this.held = !this.held);
 	}
 
 	set held(value) {
-		this._held = value;
-		this.render();
+		if (value) this.button.classList.add('held');
+		else this.button.classList.remove('held');
 	}
-	get held() { return this._held; }
+	get held() { return this.button.classList.contains('held'); }
 
 	set disabled(value) { this.button.disabled = value; }
 	get disabled() { return this.button.disabled; }
@@ -38,11 +44,6 @@ export class HoldableDie extends HTMLElement {
 	async roll() {
 		if (!this.held) await this.innerDie.roll();
 		return !this.held;
-	}
-
-	render() {
-		if (this.held) this.classList.add('held');
-		else this.classList.remove('held');
 	}
 }
 
