@@ -108,9 +108,9 @@ void main()
 	vec3 ray = normalize(vec3(uv, 1.));
     int material = NOTHING;
 
-    for (int i = 0; i < 1000; ++i) {
+    for (int i = 0; i < 100; ++i) {
         Scene d = scene(p);
-        if (d.dist < 0.001) {
+        if (d.dist < 0.005) {
             material = d.material;
             break;
         }

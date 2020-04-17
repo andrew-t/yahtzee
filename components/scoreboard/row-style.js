@@ -32,6 +32,8 @@ export default `
 		margin: 0;
 	}
 
+	.current-player { background: #fec; }
+
 	.value:focus {
 		outline: none;
 		box-shadow: 0 0 0 2px inset #fc4;

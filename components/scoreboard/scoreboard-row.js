@@ -6,17 +6,22 @@ import {
 	isYahtzee
 } from './section-rules.js';
 
+import RowBase from './row-base.js';
 import style from './row-style.js';
 
-export class ScoreboardRow extends HTMLElement {
+export class ScoreboardRow extends RowBase {
 	constructor() {
 		super();
 
-		this.playerCount = parseInt(this.getAttribute('players'), 10) || 1;
 		Object.assign(this, bothSections.find(({ id }) => id == this.id));
 
 		shadowDom(this, `
-			<style>${style}</style>
+			<style>
+				${style}
+				button:disabled:not(:empty) {
+					background: white !important;
+				}
+			</style>
 			<span class="name" title="${this.description}">${this.name}</span>
 			${multiple(`<button class="value-cell value" disabled></button>`, this.playerCount)}
 		`);
@@ -45,17 +50,15 @@ export class ScoreboardRow extends HTMLElement {
 		// ...but only if you've filled in the right row in the upper section
 		const [yahtzeeNumber] = dice,
 			row = upperSectionNames[yahtzeeNumber],
-			scoreboardRow = this.scoreboard.getRow(row),
-			{ currentPlayer } = this.scoreboard;
-		return scoreboardRow.playerHasScored(currentPlayer);
+			scoreboardRow = this.scoreboard.getRow(row);
+		return scoreboardRow.playerHasScored(this.currentPlayer);
 	}
 
 	scoreDice(dice, callback) {
-		const { currentPlayer } = this.scoreboard;
 		// Can't score the same thing twice
-		if (this.playerHasScored(currentPlayer)) return;
+		if (this.playerHasScored(this.currentPlayer)) return;
 		const score = this.canScore(dice) * this.score(dice),
-			button = this.valueEls[currentPlayer];
+			button = this.valueEls[this.currentPlayer];
 		button.innerHTML = score;
 		button.disabled = false;
 		if (score == 0) button.classList.add('zero');
@@ -68,8 +71,7 @@ export class ScoreboardRow extends HTMLElement {
 	}
 
 	cancelScoring() {
-		const { currentPlayer } = this.scoreboard,
-			button = this.valueEls[currentPlayer];
+		const button = this.valueEls[this.currentPlayer];
 		button.classList.remove('zero');
 		if (!button.disabled) {
 			button.innerHTML = '';

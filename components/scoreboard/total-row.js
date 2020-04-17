@@ -1,12 +1,12 @@
 import { shadowDom, importChildren, multiple } from '../../util/dom.js';
 
+import RowBase from './row-base.js';
 import style from './row-style.js';
 
-export class TotalRow extends HTMLElement {
+export class TotalRow extends RowBase {
 	constructor() {
 		super();
 
-		this.playerCount = parseInt(this.getAttribute('players'), 10) || 1;
 		const description = this.getAttribute('description');
 
 		shadowDom(this, `
@@ -18,6 +18,7 @@ export class TotalRow extends HTMLElement {
 					flex-direction: column;
 					justify-content: center;
 				}
+				.current-player { background: #dca; }
 			</style>
 			<span id="name"
 				class="name"

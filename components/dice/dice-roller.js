@@ -4,7 +4,7 @@ import { shadowDom, multiple } from '../../util/dom.js';
 // but it seems like a good way of managing dependencies.
 import './rollable-die.js';
 import './holdable-die.js';
-import '../done-button.js';
+import '../button-options.js';
 
 export class DiceRoller extends HTMLElement {
 	constructor() {
@@ -30,7 +30,10 @@ export class DiceRoller extends HTMLElement {
 					dieCount)}
 			</div>
 			<span id="rollsLeft"></span>
-			<done-button id="rerollButton">Next</done-button>
+			<button-options id="rerollButtons">
+				<button id="reroll">Re-roll</button>
+				<button id="accept">Accept</button>
+			</done-button>
 		`);
 		this.dice = [ ...this.shadowRoot.querySelectorAll('holdable-die') ];
 
@@ -47,6 +50,7 @@ export class DiceRoller extends HTMLElement {
 	async runCompleteTurn() {
 		this.classList.add('active');
 		let rollsLeft = this.rollsPerTurn;
+		this.rollsLeft.innerHTML = `${rollsLeft} rolls left`;
 		for (const die of this.dice)
 			die.held = false;
 
@@ -57,21 +61,17 @@ export class DiceRoller extends HTMLElement {
 			await this.roll();
 
 			if (--rollsLeft == 0) break;
-			this.rollsLeft.innerHTML = rollsLeft == 1
+			this.rollsLeft.innerHTML = (rollsLeft == 1)
 				? '1 roll left'
 				: `${rollsLeft} rolls left`;
 
 			for (const die of this.dice)
 				die.disabled = false;
-			await this.rerollButton.waitForPress();
-			for (const die of this.dice)
-				if (!die.held)
-					continue nextRoll;
-
-			this.rollsLeft.innerHTML = '';
-			break;
+			const decision = await this.rerollButtons.waitForPress();
+			if (decision == 'accept') break;
 		}
 
+		this.rollsLeft.innerHTML = '';
 		this.classList.remove('active');
 		return this.dice.map(die => die.value);
 	}

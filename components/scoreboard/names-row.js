@@ -1,12 +1,11 @@
 import { shadowDom, importChildren, multiple } from '../../util/dom.js';
 
+import RowBase from './row-base.js';
 import style from './row-style.js';
 
-export class NamesRow extends HTMLElement {
+export class NamesRow extends RowBase {
 	constructor() {
 		super();
-
-		this.playerCount = parseInt(this.getAttribute('players'), 10) || 1;
 
 		shadowDom(this, `
 			<style>

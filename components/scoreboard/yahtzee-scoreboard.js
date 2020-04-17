@@ -37,7 +37,7 @@ export class YahtzeeScoreboard extends HTMLElement {
 		shadowDom(this, `
 			<style>${style}</style>
 			<div class="names-section">
-				<names-row players="${this.playerCount}">
+				<names-row players="${this.playerCount}" id="nameRow">
 					Player names
 				</names-row>
 			</div>
@@ -60,6 +60,11 @@ export class YahtzeeScoreboard extends HTMLElement {
 		`);
 
 		this.allRows = [ ...this.shadowRoot.querySelectorAll('scoreboard-row') ];
+		this.allDisplayRows = [
+			...this.allRows,
+			...this.shadowRoot.querySelectorAll('total-row'),
+			this.nameRow
+		];
 		for (const row of this.allRows)
 			row.scoreboard = this;
 		this.reset();
@@ -70,6 +75,13 @@ export class YahtzeeScoreboard extends HTMLElement {
 		this.currentPlayer = 0;
 		this.updateTotals();
 	}
+
+	set currentPlayer(c) {
+		this._currentPlayer = c;
+		for (const row of this.allDisplayRows)
+			row.currentPlayer = c;
+	}
+	get currentPlayer() { return this._currentPlayer; }
 
 	// accepts a full row definition or just the id
 	getRow(definition) {
@@ -93,6 +105,8 @@ export class YahtzeeScoreboard extends HTMLElement {
 			this.upperTotal.values,
 			this.lowerTotal.values
 		]);
+		// in hindsight this should not be a getter
+		this.gameOver;
 	}
 
 	scoreDice(dice) {
@@ -100,6 +114,7 @@ export class YahtzeeScoreboard extends HTMLElement {
 		if (isYahtzee(dice) && this.getRow('yahtzee').values[this.currentPlayer] > 0)
 			this.yahtzeeBonus.increase(this.currentPlayer, 100);
 		// regular points...
+
 		return new Promise(resolve => {
 			for (const row of this.allRows)
 				row.scoreDice(dice, () => resolve(row.id));
@@ -116,6 +131,7 @@ export class YahtzeeScoreboard extends HTMLElement {
 		for (const row of this.allRows)
 			if (!row.complete)
 				return false;
+		this.currentPlayer = null;
 		return true;
 	}
 }
