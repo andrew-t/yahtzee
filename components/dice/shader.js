@@ -1,12 +1,14 @@
 export default `
 #ifdef GL_ES
-    precision highp float;
+    precision mediump float;
 #endif
 
 uniform float VALUE;
 
 uniform vec2 u_resolution;
 uniform float u_time;
+uniform float u_tumbliness_a;
+uniform float u_tumbliness_b;
 
 const float CORNER = 0.25;
 const float EDGE = 0.55;
@@ -52,8 +54,8 @@ Scene scene(vec3 p) {
     if (VALUE == 4.0 || VALUE == 3.0) p.yz = p.zy;
     
     float tumbliness = max(1.0 - u_time, 0.0) * TUMBLINESS;
-    p.xy = rotate(p.xy, tumbliness);
-    p.yz = rotate(p.yz, tumbliness * 0.637);
+    p.xy = rotate(p.xy, tumbliness * u_tumbliness_a);
+    p.yz = rotate(p.yz, tumbliness * u_tumbliness_b);
     
     Scene o = Scene(DIE, box(p, vec3(DIE_SIZE)) - DIE_ROUNDNESS);
     // 1

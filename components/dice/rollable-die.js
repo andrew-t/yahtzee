@@ -48,6 +48,8 @@ export class RollableDie extends HTMLElement {
 
 	render() {
 		this.glslCanvas.setUniform('VALUE', this.value);
+		this.glslCanvas.setUniform('u_tumbliness_a', randTumble());
+		this.glslCanvas.setUniform('u_tumbliness_b', randTumble());
 		this.shader.title = this.value;
 	}
 
@@ -62,3 +64,8 @@ export class RollableDie extends HTMLElement {
 }
 
 window.customElements.define('rollable-die', RollableDie);
+
+function randTumble() {
+	const x = Math.random() - 0.5;
+	return x + Math.sign(x) * 0.5;
+}

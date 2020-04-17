@@ -29,7 +29,7 @@ export class HoldableDie extends HTMLElement {
 			<button id="button">
 				<rollable-die
 					id="innerDie"
-					downscaling="2"
+					downscaling="${downscaling}"
 					faces="${numberOfFaces}">
 				</rollable-die>
 			</button>
