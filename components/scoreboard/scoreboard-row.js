@@ -58,6 +58,7 @@ export class ScoreboardRow extends HTMLElement {
 			button = this.valueEls[currentPlayer];
 		button.innerHTML = score;
 		button.disabled = false;
+		if (score == 0) button.classList.add('zero');
 		button.addEventListener('click',
 			this.buttonCallback = (e => {
 				callback(score);
@@ -69,6 +70,7 @@ export class ScoreboardRow extends HTMLElement {
 	cancelScoring() {
 		const { currentPlayer } = this.scoreboard,
 			button = this.valueEls[currentPlayer];
+		button.classList.remove('zero');
 		if (!button.disabled) {
 			button.innerHTML = '';
 			button.disabled = true;

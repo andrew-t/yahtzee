@@ -42,6 +42,10 @@ export default `
 		cursor: pointer;
 	}
 
+	button.value.zero:not(:disabled) {
+		background: #fcc;
+	}
+
 	button.value:not(:disabled):hover {
 		color: blue;
 		background: #ff8;
