@@ -5,6 +5,7 @@ export default `
 		border-radius: 1em;
 		display: block;
 		overflow: hidden;
+		background: white;
 	}
 
 	@media (max-width: 30em) {
