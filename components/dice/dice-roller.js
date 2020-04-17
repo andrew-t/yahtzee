@@ -5,6 +5,7 @@ import { shadowDom, multiple } from '../../util/dom.js';
 import './rollable-die.js';
 import './holdable-die.js';
 import '../button-options.js';
+import '../done-button.js';
 
 import style from './roller-style.js';
 
@@ -31,7 +32,8 @@ export class DiceRoller extends HTMLElement {
 			<button-options id="rerollButtons">
 				<button id="reroll">Re-roll</button>
 				<button id="accept">Accept</button>
-			</done-button>
+			</button-options>
+			<done-button id="startButton">Roll</done-button>
 		`);
 		this.dice = [ ...this.shadowRoot.querySelectorAll('holdable-die') ];
 
@@ -47,6 +49,8 @@ export class DiceRoller extends HTMLElement {
 
 	async runCompleteTurn() {
 		this.classList.add('active');
+		await this.startButton.waitForPress();
+
 		let rollsLeft = this.rollsPerTurn;
 		this.rollsLeft.innerHTML = `${rollsLeft} rolls left`;
 		for (const die of this.dice)
