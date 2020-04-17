@@ -4,8 +4,8 @@ import shader from './shader.js';
 const style = `
 	:host {
 		display: inline-block;
-		width: 1em;
-		height: 1em;
+		width: 100%;
+		height: 100%;
 		box-sizing: border-box;
 		font-size: 15vmin;
 		text-align: center;
@@ -13,8 +13,8 @@ const style = `
 	}
 
 	#shader {
-		width: 1em;
-		height: 1em;
+		width: 100%;
+		height: 100%;
 	}
 `;
 

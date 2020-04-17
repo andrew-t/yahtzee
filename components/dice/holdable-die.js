@@ -1,20 +1,26 @@
 import { shadowDom } from '../../util/dom.js';
 
 const style = `
+	:host {
+		display: inline-block;
+	}
 	button {
-		border: 2px solid green;
+		border: 5px solid green;
+		width: 100%;
+		height: 100%;
 		padding: 0;
+		box-sizing: border-box;
 	}
 	button.held {
-		border: 2px solid red;
+		border: 5px solid red;
 	}
 	button:disabled {
-		border: 2px solid black;
+		border: 5px solid black;
 		color: black;
 	}
 	button:focus {
 		outline: none;
-		box-shadow: 0 0 0 4px #fd8;
+		box-shadow: 0 5px 0 0 #fd8;
 	}
 `;
 

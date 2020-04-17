@@ -53,4 +53,8 @@ export default `
 		background: #ff8;
 		text-decoration: underline;
 	}
+
+	button:disabled:not(:empty) {
+		background: white !important;
+	}
 `;

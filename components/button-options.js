@@ -1,18 +1,5 @@
 import { shadowDom, importChildren } from '../util/dom.js';
 
-const style = `
-	:host {
-		display: inline-block;
-		width: 2em;
-		line-height: 2em;
-		text-align: center;
-		line-height: 2em;
-		border: 1px solid black;
-		background: white;
-		margin: 0.5em;
-	}
-`;
-
 export class ButtonOptions extends HTMLElement {
 	constructor() {
 		super();

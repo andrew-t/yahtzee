@@ -6,6 +6,8 @@ import './rollable-die.js';
 import './holdable-die.js';
 import '../button-options.js';
 
+import style from './roller-style.js';
+
 export class DiceRoller extends HTMLElement {
 	constructor() {
 		super();
@@ -17,12 +19,8 @@ export class DiceRoller extends HTMLElement {
 		this.rollsPerTurn = parseInt(rollsPerTurn, 10) || 3;
 
 		shadowDom(this, `
-			<style>
-				:host {
-					text-align: center;
-				}
-			</style>
-			<div>
+			<style>${style}</style>
+			<div class="dice">
 				${multiple(
 					`<holdable-die faces="${numberOfFaces}"
 						downscaling="${downscaling}">
@@ -56,8 +54,6 @@ export class DiceRoller extends HTMLElement {
 
 		nextRoll:
 		while (true) {
-			for (const die of this.dice)
-				die.disabled = true;
 			await this.roll();
 
 			if (--rollsLeft == 0) break;
@@ -68,6 +64,9 @@ export class DiceRoller extends HTMLElement {
 			for (const die of this.dice)
 				die.disabled = false;
 			const decision = await this.rerollButtons.waitForPress();
+			for (const die of this.dice)
+				die.disabled = true;
+
 			if (decision == 'accept') break;
 		}
 

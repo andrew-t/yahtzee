@@ -16,12 +16,7 @@ export class ScoreboardRow extends RowBase {
 		Object.assign(this, bothSections.find(({ id }) => id == this.id));
 
 		shadowDom(this, `
-			<style>
-				${style}
-				button:disabled:not(:empty) {
-					background: white !important;
-				}
-			</style>
+			<style>${style}</style>
 			<span class="name" title="${this.description}">${this.name}</span>
 			${multiple(`<button class="value-cell value" disabled></button>`, this.playerCount)}
 		`);
