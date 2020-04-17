@@ -88,7 +88,7 @@ Scene scene(vec3 p) {
 	return o;
 }
 
-const vec2 e = vec2(0.0, 0.0001);
+const vec2 e = vec2(0.0, 0.008);
 vec3 normal(vec3 p) {
     return normalize(vec3(
         scene(p + e.yxx).dist - scene(p - e.yxx).dist,
