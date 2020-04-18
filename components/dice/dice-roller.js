@@ -1,4 +1,4 @@
-import { shadowDom, multiple } from '../../util/dom.js';
+import { shadowDom, multiple, waitForClick } from '../../util/dom.js';
 
 // You don't need to import these here,
 // but it seems like a good way of managing dependencies.
@@ -33,7 +33,7 @@ export class DiceRoller extends HTMLElement {
 				<button id="reroll">Re-roll</button>
 				<button id="accept">Accept</button>
 			</button-options>
-			<done-button id="startButton">Roll</done-button>
+			<button id="startButton">Roll</button>
 		`);
 		this.dice = [ ...this.shadowRoot.querySelectorAll('holdable-die') ];
 
@@ -49,7 +49,7 @@ export class DiceRoller extends HTMLElement {
 
 	async runCompleteTurn() {
 		this.classList.add('active');
-		await this.startButton.waitForPress();
+		await waitForClick(this.startButton);
 
 		let rollsLeft = this.rollsPerTurn;
 		this.rollsLeft.innerHTML = `${rollsLeft} rolls left`;

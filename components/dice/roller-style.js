@@ -26,6 +26,9 @@ export default `
 		display: grid;
 		grid-template-columns: 1fr 2fr;
 		grid-template-rows: auto auto;
+		border-top: 2px solid black;
+		background: white;
+		padding: 0.5em 0;
 	}
 
 	holdable-die {
@@ -34,7 +37,7 @@ export default `
 	}
 
 	.dice,
-	done-button {
+	#startButton {
 		grid-column: 1 / span 2;
 		grid-row: 1 / span 1;
 	}
@@ -57,12 +60,12 @@ export default `
 
 	${buttonStyle}
 
-	done-button:not(.active) {
+	#startButton:disabled {
 		display: none;
 	}
-	done-button {
+	#startButton {
 		z-index: 1;
 		display: inline-block;
-		padding: 2.5em;
+		padding: calc(9vmin - 1.75em) 0;
 	}
 `;

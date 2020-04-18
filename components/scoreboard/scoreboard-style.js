@@ -1,17 +1,10 @@
 export default `
 	:host {
-		margin: 2em;
 		border: 2px solid black;
 		border-radius: 1em;
 		display: block;
 		overflow: hidden;
 		background: white;
-	}
-
-	@media (max-width: 30em) {
-		:host {
-			margin: 0.5em;
-		}
 	}
 
 	total-row {

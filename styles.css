@@ -2,4 +2,22 @@ body {
 	user-select: none;
 	margin: 0;
 	background: aliceblue;
+	padding-bottom: calc(10em + 18vmin);
+}
+
+yahtzee-scoreboard {
+	margin: 2em;
+}
+
+@media (max-width: 30em) {
+	yahtzee-scoreboard {
+		margin: 0.5em;
+	}
+}
+
+dice-roller {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100vw;
 }

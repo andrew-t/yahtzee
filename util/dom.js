@@ -20,3 +20,15 @@ export function importChildren(host, node) {
 	for (const child of host.childNodes)
 		node.appendChild(child);
 }
+
+export function waitForClick(button) {
+	return new Promise(resolve => {
+		button.disabled = false;
+		const listener = () => {
+			button.disabled = true;
+			button.removeEventListener('click', listener);
+			resolve();
+		};
+		button.addEventListener('click', listener);
+	});
+}
