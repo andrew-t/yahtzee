@@ -109,22 +109,35 @@ export class YahtzeeScoreboard extends HTMLElement {
 		this.gameOver;
 	}
 
-	scoreDice(dice) {
+	async scoreDice(dice) {
 		// yahtzee bonus...
 		if (isYahtzee(dice) && this.getRow('yahtzee').values[this.currentPlayer] > 0)
 			this.yahtzeeBonus.increase(this.currentPlayer, 100);
-		// regular points...
 
-		return new Promise(resolve => {
-			for (const row of this.allRows)
-				row.scoreDice(dice, () => resolve(row.id));
-		}).then(row => {
-			for (const row of this.allRows)
-				row.cancelScoring();
-			if (++this.currentPlayer == this.playerCount)
-				this.currentPlayer = 0;
-			this.updateTotals();
-		});
+		// regular points...
+		const score = () => {
+			return new Promise(resolve => {
+				for (const row of this.allRows)
+					row.scoreDice(dice, () => resolve(row));
+			}).then(scoredRow => {
+				document.getElementById('toasts').toast(
+					`Scored as ${scoredRow.name.toLowerCase()}`,
+					{
+						html: 'Undo',
+						callback: () => {
+							if (!this.currentPlayer--) this.currentPlayer = this.playerCount - 1;
+							scoredRow.clearScore(this.currentPlayer);
+							score();
+						}
+					});
+				for (const row of this.allRows)
+					row.cancelScoring();
+				if (++this.currentPlayer == this.playerCount)
+					this.currentPlayer = 0;
+				this.updateTotals();
+			});
+		};
+		await score();
 	}
 
 	get gameOver() {

@@ -80,6 +80,10 @@ export class ScoreboardRow extends RowBase {
 			el.disabled ? parseInt(el.innerHTML, 10) || 0 : 0);
 	}
 
+	clearScore(player) {
+		this.valueEls[player].innerHTML = '';
+	}
+
 	playerHasScored(n) {
 		const button = this.valueEls[n];
 		return button.disabled && !!button.innerHTML;

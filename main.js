@@ -1,5 +1,6 @@
 import './components/dice/dice-roller.js';
 import './components/scoreboard/yahtzee-scoreboard.js';
+import './components/toast.js';
 
 const numberOfPlayers = prompt('How many players?');
 
