@@ -40,6 +40,8 @@ export class RollableDie extends HTMLElement {
 			console.log('Compiling shader...');
 			this.glslCanvas.load(shader);
 		});
+
+		this.timeouts = [];
 	}
 
 	connectedCallback() {
@@ -53,13 +55,24 @@ export class RollableDie extends HTMLElement {
 		this.shader.title = this.value;
 	}
 
+	clearTimeouts() {
+		while (this.timeouts.length > 0)
+			clearTimeout(this.timeouts.pop());
+	}
+
 	roll() {
 		this.value = Math.floor(Math.random() * this.numberOfFaces) + 1;
 		this.render();
 		// reset the tumble
 		this.glslCanvas.timeLoad = performance.now();
 		this.glslCanvas.play();
-		return new Promise(resolve => setTimeout(resolve, 1000));
+		this.clearTimeouts();
+		return new Promise(resolve => this.timeouts.push(setTimeout(() => {
+			resolve();
+			// Force the tumble value to long ago
+			this.glslCanvas.timeLoad = performance.now() - 1e6;
+			this.timeouts.push(setTimeout(() => this.glslCanvas.pause(), 500));
+		}, 1000)));
 	}
 }
 
