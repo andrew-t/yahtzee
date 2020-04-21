@@ -1,4 +1,4 @@
-import { shadowDom, importChildren, map } from '../../util/dom.js';
+import { shadowDom, importChildren, map } from '../util/dom.js';
 
 const rackStyle = `
 	:host {
@@ -35,6 +35,9 @@ const sliceStyle = `
 		color: #4fc;
 		padding: 0;
 		margin: 0 0 0 1em;
+		background: none;
+		border: none;
+		cursor: pointer;
 	}
 `;
 
