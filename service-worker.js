@@ -16,7 +16,7 @@
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
-const PRECACHE = 'precache-v1';
+const PRECACHE = 'precache-v2';
 const RUNTIME = 'runtime';
 
 const urlsToCache = [
@@ -31,6 +31,7 @@ const urlsToCache = [
   'components/scoreboard/row-style.js',
   'components/scoreboard/scoreboard-row.js',
   'components/scoreboard/scoreboard-style.js',
+  'components/scoreboard/section-rules.js',
   'components/scoreboard/total-row.js',
   'components/scoreboard/yahtzee-scoreboard.js',
   'components/button-options.js',
@@ -52,12 +53,10 @@ self.addEventListener('install', event => event.waitUntil(preCache()));
 
 // The activate handler takes care of cleaning up old caches.
 async function cleanUpOldCaches() {
-  const currentCaches = [PRECACHE, RUNTIME],
-    cacheNames = await caches.keys(),
-    cachesToDelete = cacheNames.filter(
-      cacheName =>!currentCaches.includes(cacheName));
-  for (const cacheToDelete of cachesToDelete)
-    await caches.delete(cacheToDelete);
+  const currentCaches = [PRECACHE, RUNTIME];
+  for (const cacheName of await caches.keys())
+    if (!currentCaches.includes(cacheName))
+      await caches.delete(cacheName);
   await self.clients.claim();
 }
 self.addEventListener('activate', event => event.waitUntil(cleanUpOldCaches()));
