@@ -2,6 +2,9 @@ import './components/dice/dice-roller.js';
 import './components/scoreboard/yahtzee-scoreboard.js';
 import './components/toast.js';
 
+if ('serviceWorker' in navigator)
+  navigator.serviceWorker.register('service-worker.js');
+
 const numberOfPlayers = prompt('How many players?');
 
 document.getElementById('game').innerHTML += `
