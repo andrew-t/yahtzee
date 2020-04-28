@@ -5,6 +5,7 @@ import './names-row.js';
 import style from './scoreboard-style.js';
 
 import { shadowDom, map } from '../../util/dom.js';
+import eventorise from '../../util/events.js';
 
 import { upperSection, lowerSection, bothSections, isYahtzee } from './section-rules.js';
 
@@ -115,29 +116,20 @@ export class YahtzeeScoreboard extends HTMLElement {
 			this.yahtzeeBonus.increase(this.currentPlayer, 100);
 
 		// regular points...
-		const score = () => {
-			return new Promise(resolve => {
-				for (const row of this.allRows)
-					row.scoreDice(dice, () => resolve(row));
-			}).then(scoredRow => {
-				document.getElementById('toasts').toast(
-					`Scored as ${scoredRow.name.toLowerCase()}`,
-					{
-						html: 'Undo',
-						callback: () => {
-							if (!this.currentPlayer--) this.currentPlayer = this.playerCount - 1;
-							scoredRow.clearScore(this.currentPlayer);
-							score();
-						}
-					});
+		for (const row of this.allRows)
+			row.scoreDice(dice, () => {
+				this.emit('score', row, dice);
 				for (const row of this.allRows)
 					row.cancelScoring();
 				if (++this.currentPlayer == this.playerCount)
 					this.currentPlayer = 0;
 				this.updateTotals();
 			});
-		};
-		await score();
+	}
+
+	unscore(row) {
+		if (!this.currentPlayer--) this.currentPlayer = this.playerCount - 1;
+		row.clearScore(this.currentPlayer);
 	}
 
 	get gameOver() {
@@ -149,4 +141,5 @@ export class YahtzeeScoreboard extends HTMLElement {
 	}
 }
 
+eventorise(YahtzeeScoreboard.prototype);
 window.customElements.define('yahtzee-scoreboard', YahtzeeScoreboard);

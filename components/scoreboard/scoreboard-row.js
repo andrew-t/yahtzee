@@ -59,9 +59,9 @@ export class ScoreboardRow extends RowBase {
 		if (score == 0) button.classList.add('zero');
 		button.addEventListener('click',
 			this.buttonCallback = (e => {
-				callback(score);
 				button.disabled = true;
 				button.removeEventListener('click', this.buttonCallback);
+				callback(score);
 			}));
 	}
 
@@ -76,7 +76,7 @@ export class ScoreboardRow extends RowBase {
 	}
 
 	get values() {
-		return this.valueEls.map(el => 
+		return this.valueEls.map(el =>
 			el.disabled ? parseInt(el.innerHTML, 10) || 0 : 0);
 	}
 

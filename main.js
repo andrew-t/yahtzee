@@ -19,14 +19,24 @@ document.getElementById('game').innerHTML += `
 	</dice-roller>
 `;
 
-const dice = document.getElementById('roller'),
-	scoreboard = document.getElementById('scores');
+const diceRoller = document.getElementById('roller'),
+	scoreboard = document.getElementById('scores'),
+	coasts = document.getElementById('toasts');
 
-play();
+diceRoller.runCompleteTurn().then(roll => scoreboard.scoreDice(roll));
 
-async function play() {
-	while (!scoreboard.gameOver) {
-		const roll = await dice.runCompleteTurn();
-		await scoreboard.scoreDice(roll);
-	}
-}
+scoreboard.on('score', (scoredRow, dice) => {
+	toasts.clear();
+	toasts.toast(
+		`Scored as ${scoredRow.name.toLowerCase()}`,
+		{
+			html: 'Undo',
+			callback: () => {
+				scoreboard.unscore(scoredRow);
+				scoreboard.scoreDice(dice);
+			}
+		});
+
+	if (!scoreboard.gameOver)
+		diceRoller.runCompleteTurn().then(roll => scoreboard.scoreDice(roll));
+});
