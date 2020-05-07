@@ -44,7 +44,8 @@ export class YahtzeeScoreboard extends HTMLElement {
 			</div>
 			<div class="upper-section">
 				${map(upperSection, scoreboardRow)}
-				${totalRow('upperSubtotal', 'Upper section subtotal')}
+				${totalRow('upperSubtotal', 'Upper section subtotal',
+					'The number in brackets is how you’re doing compared to the three-of-every-number needed to get your bonus.')}
 				${totalRow('upperBonus', 'Upper section bonus',
 					'35 bonus points if you score a total of 63 in the upper section, equivalent to getting three ones, three twos, and so on.')}
 				${totalRow('upperTotal', 'Upper section total')}
@@ -91,11 +92,27 @@ export class YahtzeeScoreboard extends HTMLElement {
 	}
 
 	updateTotals() {
-		this.upperSubtotal.values = sumArrays(
-			upperSection.map(r => this.getRow(r).values));
-		this.upperBonus.values = this.upperSubtotal.values.map(n => 35 * (n >= 63));
+		const upperSubtotal = [];
+		const upperSurplus = [];
+		for (let player = 0; player < this.playerCount; ++player) {
+			upperSubtotal[player] = 0;
+			upperSurplus[player] = 0;
+			for (let i = 0; i < 6; ++i) {
+				const row = this.getRow(upperSection[i]);
+				if (row.playerHasScored(player)) {
+					const value = row.values[player];
+					upperSubtotal[player] += value;
+					upperSurplus[player] += value - (i + 1) * 3;
+				}
+			}
+		}
+		this.upperSubtotal.values = upperSubtotal.map((total, i) => {
+			const surplus = upperSurplus[i];
+			return `${total} (${surplus < 0 ? '−' : '+'}${Math.abs(surplus)})`;
+		});
+		this.upperBonus.values = upperSubtotal.map(n => 35 * (n >= 63));
 		this.upperTotal.values = sumArrays([
-			this.upperSubtotal.values,
+			upperSubtotal,
 			this.upperBonus.values
 		]);
 		this.lowerTotal.values = sumArrays([
