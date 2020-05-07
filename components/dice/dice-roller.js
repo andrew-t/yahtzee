@@ -56,7 +56,6 @@ export class DiceRoller extends HTMLElement {
 		for (const die of this.dice)
 			die.held = false;
 
-		nextRoll:
 		while (true) {
 			await this.roll();
 

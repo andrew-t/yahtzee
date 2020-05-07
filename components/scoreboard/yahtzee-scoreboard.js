@@ -118,18 +118,19 @@ export class YahtzeeScoreboard extends HTMLElement {
 		// regular points...
 		for (const row of this.allRows)
 			row.scoreDice(dice, () => {
-				this.emit('score', row, dice);
 				for (const row of this.allRows)
 					row.cancelScoring();
+				this.updateTotals();
 				if (++this.currentPlayer == this.playerCount)
 					this.currentPlayer = 0;
-				this.updateTotals();
+				this.emit('score', row, dice);
 			});
 	}
 
 	unscore(row) {
 		if (!this.currentPlayer--) this.currentPlayer = this.playerCount - 1;
 		row.clearScore(this.currentPlayer);
+		this.updateTotals();
 	}
 
 	get gameOver() {
