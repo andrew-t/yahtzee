@@ -92,8 +92,8 @@ export class YahtzeeScoreboard extends HTMLElement {
 	}
 
 	updateTotals() {
-		const upperSubtotal = [];
-		const upperSurplus = [];
+		const upperSubtotal = [], upperSurplus = [],
+			anyScored = [], anyUnscored = [];
 		for (let player = 0; player < this.playerCount; ++player) {
 			upperSubtotal[player] = 0;
 			upperSurplus[player] = 0;
@@ -103,12 +103,15 @@ export class YahtzeeScoreboard extends HTMLElement {
 					const value = row.values[player];
 					upperSubtotal[player] += value;
 					upperSurplus[player] += value - (i + 1) * 3;
-				}
+					anyScored[player] = true;
+				} else anyUnscored[player] = true;
 			}
 		}
 		this.upperSubtotal.values = upperSubtotal.map((total, i) => {
 			const surplus = upperSurplus[i];
-			return `${total} (${surplus < 0 ? '−' : '+'}${Math.abs(surplus)})`;
+			return (anyScored[i] && anyUnscored[i] && total < 63)
+				? `${total} (${surplus < 0 ? '−' : '+'}${Math.abs(surplus)})`
+				: total;
 		});
 		this.upperBonus.values = upperSubtotal.map(n => 35 * (n >= 63));
 		this.upperTotal.values = sumArrays([
