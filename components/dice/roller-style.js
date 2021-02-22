@@ -2,8 +2,8 @@ export const buttonStyle = `
 	button {
 		font-family: sans-serif;
 		font-size: inherit;
-		padding: 0.5em 2em;
-		margin: 0.5em 2em;
+		padding: 0.5em 1em;
+		margin: 0.5em 1em;
 		border: 1px solid black;
 		cursor: pointer;
 	}
@@ -17,6 +17,9 @@ export const buttonStyle = `
 	button:not(:disabled):hover:focus {
 		outline: none;
 		box-shadow: 0 0 0 1px #000, 0 0 0 3px #fd8;
+	}
+	@media (prefers-color-scheme: dark) {
+		:host { background: black; border-color: white; }
 	}
 `;
 

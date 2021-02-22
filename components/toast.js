@@ -39,6 +39,11 @@ const sliceStyle = `
 		border: none;
 		cursor: pointer;
 	}
+
+	@media (prefers-color-scheme: dark) {
+		:host { background: #bbb; color: black; }
+		button { color: #041; }
+	}
 `;
 
 function createButton(text, callback) {

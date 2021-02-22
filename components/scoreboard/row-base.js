@@ -1,4 +1,3 @@
-
 export default class RowBase extends HTMLElement {
 	constructor() {
 		super();

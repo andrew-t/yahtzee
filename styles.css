@@ -5,6 +5,10 @@ body {
 	padding-bottom: calc(10em + 18vmin);
 }
 
+@media (prefers-color-scheme: dark) {
+	body { background: #013; color: white; }
+}
+
 yahtzee-scoreboard {
 	margin: 2em;
 }

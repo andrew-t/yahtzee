@@ -19,6 +19,9 @@ export class TotalRow extends RowBase {
 					justify-content: center;
 				}
 				.current-player { background: #dca; }
+				@media (prefers-color-scheme: dark) {
+					.current-player { background: #543; }
+				}
 			</style>
 			<span id="name"
 				class="name"

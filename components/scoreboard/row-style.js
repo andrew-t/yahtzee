@@ -57,4 +57,13 @@ export default `
 	button:disabled:not(:empty) {
 		background: white !important;
 	}
+
+	@media (prefers-color-scheme: dark) {
+		.current-player { background: #320; }
+		button.value:not(:disabled) { background: #330; }
+		button.value.zero:not(:disabled) { background: #300; }
+		button.value:not(:disabled):hover { background: #300; }
+		button:disabled:not(:empty) { background: black !important; }
+		.value-cell { border-color: white; }
+	}
 `;
