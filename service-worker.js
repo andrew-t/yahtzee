@@ -24,6 +24,7 @@ const urlsToCache = [
   'components/dice/dice-roller.js',
   'components/dice/glsl-canvas.js',
   'components/dice/holdable-die.js',
+  'components/dice/rollable-die.js',
   'components/dice/roller-style.js',
   'components/dice/shader.js',
   'components/scoreboard/names-row.js',
@@ -38,6 +39,7 @@ const urlsToCache = [
   'components/done-button.js',
   'components/toast.js',
   'util/dom.js',
+  'util/events.js',
   'main.js',
   './', // Alias for index.html
   'styles.css',
